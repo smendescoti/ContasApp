@@ -1,0 +1,50 @@
+# Pastas e arquivos gerados automaticamente
+obj/
+bin/
+*.dll
+*.exe
+*.pdb
+*.user
+*.log
+*.vs/
+*.vssscc
+
+# Pacotes NuGet
+## Se você está usando o NuGet, descomente as linhas abaixo para ignorar a pasta 'packages'
+# packages/
+
+# Arquivos temporários gerados pelo Visual Studio
+*.obj
+*.cache
+*.csproj.vspscc
+*.vsp
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Ferramentas opcionais do Visual Studio
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Arquivos de publicação
+*.publishsettings
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
+
+# Arquivos de log e erros
+LogFiles/
+*.logs
+*.results
+
+# Visual Studio Code
+.vscode/
+
+# Arquivos temporários do IIS Express
+iisexpress**\/*.xml
