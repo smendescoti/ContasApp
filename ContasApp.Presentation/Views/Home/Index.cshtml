@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h5>Seja bem vindo ao sistema!</h5>
+<p>Resumo financeiro do mês de Julho/2023</p>
+<hr />
+
+<div class="row mb-5">
+    <div class="col">
+        <div id="graficoTipos"></div>
+    </div>
+    <div class="col">
+        <div id="graficoCategorias"></div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script>
+
+        // Dados para o gráfico de pizza
+        const dadosPizza = [
+            ['Contas a Receber', 5000],
+            ['Contas a Pagar', 3000]
+        ];
+
+        // Dados para o gráfico de barras
+        const dadosBarras = [
+            { categoria: 'Alimentação', valor: 1500 },
+            { categoria: 'Transporte', valor: 1000 },
+            { categoria: 'Educação', valor: 800 },
+            { categoria: 'Saúde', valor: 1200 }
+        ];
+
+        // Cores para os dados
+        const coresPizza = ['#d9534f', '#5cb85c'];
+        const coresBarras = ['#FFA500', '#008000', '#0000FF', '#800080'];
+
+        // Configurações do gráfico de pizza
+        const opcoesPizza = {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Contas a Receber e Contas a Pagar'
+            },
+            series: [{
+                name: 'Valor',
+                data: dadosPizza
+            }],
+            plotOptions: {
+                pie: {
+                    colors: coresPizza
+                }
+            }
+        };
+
+        // Configurações do gráfico de barras
+        const opcoesBarras = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Valor de Contas por Categoria'
+            },
+            xAxis: {
+                categories: dadosBarras.map(item => item.categoria)
+            },
+            yAxis: {
+                title: {
+                    text: 'Valor'
+                }
+            },
+            series: [{
+                name: 'Valor',
+                data: dadosBarras.map(item => item.valor)
+            }],
+            plotOptions: {
+                bar: {
+                    colors: coresBarras
+                }
+            }
+        };
+
+        // Renderizar os gráficos
+        Highcharts.chart('graficoTipos', opcoesPizza);
+        Highcharts.chart('graficoCategorias', opcoesBarras);
+
+    </script>
+}

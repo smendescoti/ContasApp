@@ -1,0 +1,121 @@
+﻿@using ContasApp.Data.Entities
+@using Newtonsoft.Json
+@{
+    //ler os dados do usuário autenticado gravado no Cookie do Asp.Net
+    var usuario = JsonConvert.DeserializeObject<Usuario>(User.Identity.Name);
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContasApp - controle financeiro</title>
+
+    <!-- bibliotecas CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/dataTables.min.css"/>
+</head>
+<body>
+
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#"><strong>ContasApp - Controle financeiro</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Home/Index">Página inicial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Contas/Cadastro">Cadastrar contas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Contas/Consulta">Consultar contas</a>
+                    </li>
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link active dropdown-toggle btn btn-sm btn-primary"
+                           style="border: 1px solid #eee;" href="#" id="user-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @usuario.Nome | @usuario.Email
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown">
+                            <li>
+                                <a class="dropdown-item" href="/Usuarios/AlterarSenha">
+                                    Alterar Senha de acesso
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/Account/Logout"
+                                    onclick="return confirm('Deseja realmente sair do sistema?');">
+                                    Sair do Sistema
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- exibir as mensagens -->
+    @if(TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Sucesso!</strong> @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else if(TempData["MensagemAlerta"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Alerta!</strong> @TempData["MensagemAlerta"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro!</strong> @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Conteúdo principal -->
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <!-- local para inserir o conteúdo das páginas -->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <!-- bibliotecas JavaScript -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/jquery-3.7.0.min.js"></script>
+    <script src="/js/dataTables.min.js"></script>
+    <script src="/js/highcharts.js"></script>
+
+    <!-- seção para que outras páginas possam inserir conteudo JavaScript -->
+    @RenderSection("scripts", required: false)
+
+    <!-- função para ativar o jquery datatables -->
+    <script>
+        //executar quando a página for aberta..
+        $(document).ready(function(){
+            //procurando o elemento HTML que contém a class='datatable'
+            //e então aplicar a formatação do jquery datatables
+            $(".datatable").DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/pt-BR.json',
+                }
+            });
+        })
+    </script>
+
+</body>
+</html>

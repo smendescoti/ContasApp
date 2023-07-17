@@ -1,0 +1,80 @@
+﻿@* Definindo a classe de modelo desta página *@
+@model ContasApp.Presentation.Models.ContasEdicaoViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h5>Edição de contas</h5>
+<p>Utilize o formulário abaixo para alterar os dados da conta.</p>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <div>
+        @Html.HiddenFor(model => model.Id)
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <label>Nome da conta:</label>
+            @Html.TextBoxFor(model => model.Nome, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Nome)
+            </span>
+        </div>
+        <div class="col">
+            <label>Data da conta:</label>
+            @Html.TextBoxFor(model => model.Data, "{0:yyyy-MM-dd}",
+                new { @class = "form-control", @type = "date" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Data)
+            </span>
+        </div>
+        <div class="col">
+            <label>Valor da conta:</label>
+            @Html.TextBoxFor(model => model.Valor, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Valor)
+            </span>
+        </div>
+        <div class="col">
+            <label>Tipo da conta:</label>
+            <div>
+                @Html.RadioButtonFor(model => model.Tipo, 1) Conta a Receber
+            </div>
+            <div>
+                @Html.RadioButtonFor(model => model.Tipo, 2) Conta a Pagar
+            </div>
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Tipo)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <label>Selecione a categoria da conta:</label>
+            @Html.DropDownListFor(model => model.CategoriaId, ViewBag.Categorias as List<SelectListItem>,
+        "Escolha uma opção", new { @class = "form-select" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.CategoriaId)
+            </span>
+        </div>
+        <div class="col">
+            <label>Observações conta:</label>
+            @Html.TextAreaFor(model => model.Observacoes, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.Observacoes)
+            </span>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col">
+            <input type="submit" class="btn btn-primary" value="Salvar Alterações" />
+            <a href="/Contas/Consulta" class="btn btn-light">Voltar</a>
+        </div>
+    </div>
+
+}

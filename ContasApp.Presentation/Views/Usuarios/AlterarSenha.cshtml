@@ -1,0 +1,43 @@
+﻿@* Definindo a classe de modelo de dados desta página *@
+@model ContasApp.Presentation.Models.UsuariosAlterarSenhaViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h5>Alterar Senha de acesso</h5>
+<p>Utilize o formulário abaixo para alterar sua senha de acesso ao sistema.</p>
+<hr />
+
+@using(Html.BeginForm())
+{
+    <div class="row mb-2">
+        <div class="col">
+            <label>Informe sua senha atual:</label>
+            @Html.PasswordFor(model => model.SenhaAtual, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.SenhaAtual)
+            </span>
+        </div>
+        <div class="col">
+            <label>Informe sua nova senha:</label>
+            @Html.PasswordFor(model => model.NovaSenha, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.NovaSenha)
+            </span>
+        </div>
+        <div class="col">
+            <label>Confirme sua nova senha:</label>
+            @Html.PasswordFor(model => model.NovaSenhaConfirmacao, new { @class = "form-control" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.NovaSenhaConfirmacao)
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <input type="submit" class="btn btn-primary" value="Salvar alterações"/>
+        </div>
+    </div>
+}

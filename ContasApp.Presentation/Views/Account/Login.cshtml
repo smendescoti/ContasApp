@@ -1,4 +1,7 @@
-﻿@{
+﻿@* Definindo a classe de modelo desta página *@
+@model ContasApp.Presentation.Models.AccountLoginViewModel
+
+@{
     //definindo o layout da página
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
@@ -9,16 +12,27 @@
     <hr/>
 </div>
 
-<form>
-    
+<div class="text-center">
+    <strong>@TempData["Mensagem"]</strong>
+</div>
+
+@using(Html.BeginForm())
+{    
     <div class="mb-2">
         <label>Email de acesso:</label>
-        <input type="text" class="form-control" placeholder="Ex: joaosilva@gmail.com"/>
+        @Html.TextBoxFor(model => model.Email,
+            new { @class = "form-control", @placeholder = "Ex: joaosilva@gmail.com" })
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Email)
+        </span>
     </div>
 
     <div class="mb-2">
         <label>Senha de acesso:</label>
-        <input type="password" class="form-control"/>
+        @Html.PasswordFor(model => model.Senha, new { @class = "form-control" })
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Senha)
+        </span>
         <div class="text-end">
             <a href="/Account/ForgotPassword">Esqueci minha senha?</a>
         </div>
@@ -32,5 +46,4 @@
         Não possui conta?  
         <a href="/Account/Register">Cadastre-se aqui!</a>
     </div>
-
-</form>
+}

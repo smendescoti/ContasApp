@@ -1,0 +1,87 @@
+﻿@using ContasApp.Data.Entities
+
+@* Definindo a classe de modelo de dados da página *@
+@model ContasApp.Presentation.Models.ContasConsultaViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h5>Consulta de contas</h5>
+<p>Informe um período de datas para consultar suas contas:</p>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <div class="row mb-2">
+        <div class="col">
+            @Html.TextBoxFor(model => model.DataInicio, "{0:yyyy-MM-dd}",
+                new { @class = "form-control", @type = "date" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.DataInicio)
+            </span>
+        </div>
+        <div class="col">
+            @Html.TextBoxFor(model => model.DataFim, "{0:yyyy-MM-dd}",
+                new { @class = "form-control", @type = "date" })
+            <span class="text-danger">
+                @Html.ValidationMessageFor(model => model.DataFim)
+            </span>
+        </div>
+        <div class="col">
+            <input type="submit" class="btn btn-success" value="Pesquisar Contas" />
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+    @if (ViewBag.Contas != null && ViewBag.Contas.Count > 0)
+    {
+        <div class="table-responsive mb-2">
+            <table class="table table-sm datatable">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Valor</th>
+                        <th>Tipo</th>
+                        <th>Nome da conta</th>
+                        <th>Categoria</th>
+                        <th>Operações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in ViewBag.Contas as List<Conta>)
+                    {
+                        <tr>
+                            <td>@item.Data.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Valor.ToString("c")</td>
+                            <td>
+                                @if(item.Tipo == 1)
+                                {
+                                    <span class="badge bg-success">CONTA A RECEBER</span>
+                                }
+                                else if(item.Tipo == 2)
+                                {
+                                    <span class="badge bg-danger">CONTA A PAGAR</span>
+                                }
+                            </td>
+                            <td>@item.Nome</td>
+                            <td></td>
+                            <td>
+                                <a href="/Contas/Edicao/@item.Id" 
+                                    class="btn btn-sm btn-outline-primary">
+                                    Editar
+                                </a>
+                                <a href="/Contas/Exclusao/@item.Id" 
+                                    onclick="return confirm('Deseja realmente excluir esta conta?');"
+                                    class="btn btn-sm btn-outline-danger">
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
