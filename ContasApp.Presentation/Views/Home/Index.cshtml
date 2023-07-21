@@ -1,12 +1,31 @@
-﻿@{
+﻿@* Definindo a classe de modelo de dados da página *@
+@model ContasApp.Presentation.Models.DashboardViewModel
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h5>Seja bem vindo ao sistema!</h5>
-<p>Resumo financeiro do mês de Julho/2023</p>
-<hr />
+<p>Selecione o mês/ano para consulta de seu resumo financeiro:</p>
 
-<div class="row mb-5">
+@using(Html.BeginForm())
+{
+    <div class="row mb-2">
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.Mes, ViewBag.Meses as List<SelectListItem>, 
+                new { @class = "form-select" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.Ano, ViewBag.Ano as List<SelectListItem>, 
+                new { @class = "form-select" })
+        </div>
+        <div class="col-md-8">
+            <input type="submit" class="btn btn-primary" value="Aplicar filtro"/>
+        </div>
+    </div>
+}
+
+<div class="row mb-5 mt-3">
     <div class="col">
         <div id="graficoTipos"></div>
     </div>
@@ -18,24 +37,31 @@
 @section scripts {
 
     <script>
-
         // Dados para o gráfico de pizza
-        const dadosPizza = [
-            ['Contas a Receber', 5000],
-            ['Contas a Pagar', 3000]
-        ];
+        const dadosPizza = []; //vazio
 
         // Dados para o gráfico de barras
-        const dadosBarras = [
-            { categoria: 'Alimentação', valor: 1500 },
-            { categoria: 'Transporte', valor: 1000 },
-            { categoria: 'Educação', valor: 800 },
-            { categoria: 'Saúde', valor: 1200 }
-        ];
+        const dadosBarras = [];
+    </script>
+
+    @foreach (var item in ViewBag.ReceitasEDespesas)
+    {
+        <script>
+            dadosPizza.push(['@item.Nome', @item.Valor]);
+        </script>
+    }
+
+    @foreach (var item in ViewBag.TotalCategorias)
+    {
+        <script>
+            dadosBarras.push({ categoria: '@item.Categoria', valor: parseFloat(@item.Total) });
+        </script>
+    }
+
+    <script>
 
         // Cores para os dados
-        const coresPizza = ['#d9534f', '#5cb85c'];
-        const coresBarras = ['#FFA500', '#008000', '#0000FF', '#800080'];
+        const coresPizza = ['#5cb85c', '#d9534f'];
 
         // Configurações do gráfico de pizza
         const opcoesPizza = {
@@ -51,9 +77,14 @@
             }],
             plotOptions: {
                 pie: {
-                    colors: coresPizza
+                    colors: coresPizza,
+                    innerSize: '50%', 
+                    showInLegend: true,
+                    dataLabels: {
+                        enabled: false 
+                    },
                 }
-            }
+            },
         };
 
         // Configurações do gráfico de barras
@@ -75,12 +106,7 @@
             series: [{
                 name: 'Valor',
                 data: dadosBarras.map(item => item.valor)
-            }],
-            plotOptions: {
-                bar: {
-                    colors: coresBarras
-                }
-            }
+            }]
         };
 
         // Renderizar os gráficos

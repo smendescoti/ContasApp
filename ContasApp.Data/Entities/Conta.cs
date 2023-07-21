@@ -18,6 +18,7 @@ namespace ContasApp.Data.Entities
         private string? _observacoes;
         private Guid _categoriaId;
         private Guid _usuarioId;
+        private Categoria? _categoria;
 
         #endregion
 
@@ -31,6 +32,7 @@ namespace ContasApp.Data.Entities
         public string? Observacoes { get => _observacoes; set => _observacoes = value; }
         public Guid CategoriaId { get => _categoriaId; set => _categoriaId = value; }
         public Guid UsuarioId { get => _usuarioId; set => _usuarioId = value; }
+        public Categoria? Categoria { get => _categoria; set => _categoria = value; }
 
         #endregion
     }
